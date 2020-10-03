@@ -1,3 +1,3 @@
-# PWA - Todo List App
+# PWA - Finances
 
-An example of PWA with Vanilla JS and IndexedDB
+DM122 Final Homework built with VanillaJS and IndexedDB
