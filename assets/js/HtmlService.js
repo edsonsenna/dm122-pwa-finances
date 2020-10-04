@@ -109,6 +109,7 @@ export default class HtmlService {
         });
 
         li.classList.add(finance.type ? EARNT_CSS_CLASS : SPENT_CSS_CLASS);
+        spanValue.classList.add(finance.type ? 'green-text' : 'red-text');
 
         // if(task.done) {
         //     li.classList.add(DONE_CSS_CLASS);

@@ -45,3 +45,45 @@ li > button {
 #earnt-button {
   color: 'red';
 }
+
+#total-finances {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  padding: 15px;
+}
+
+#total-finances-value {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#detailed-finances {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+}
+
+#total-spent,
+#total-earnt {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+#total-spent {
+  justify-content: flex-end;
+  color: red;
+}
+
+#total-earnt {
+  justify-content: flex-start;
+  color: green;
+}
+
+#total-earnt-value,
+#total-spent-value {
+  font-size: 20px;
+  font-weight: bold;
+}
