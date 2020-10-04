@@ -1,8 +1,9 @@
 const DONE_CSS_CLASS = 'done';
 
 export default class HtmlService {
-    constructor(todoService) {
+    constructor(todoService, valueInput) {
         this.todoService = todoService;
+        this.valueInput = valueInput;
         this.bindFromEvent();
         this.listTasks();
     }

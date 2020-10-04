@@ -7,13 +7,31 @@ class App {
 
   constructor() {
     this.registerServiceWorker();
+    this.setUpMask();
     this.start();
     
   }
 
+  setUpMask() {
+
+    const maskArgs = {
+      allowNegative: false,
+      negativeSignAfter: false,
+      prefix: 'R$ ',
+      suffix: '',
+      fixed: true,
+      fractionDigits: 2,
+      decimalSeparator: ',',
+      thousandsSeparator: '.',
+      cursor: 'end'
+    };
+
+    this.input = SimpleMaskMoney.setMask('#value', maskArgs);
+  }
+
   start() {
     const financeService = new FinanceService();
-    new HtmlService(financeService);
+    new HtmlService(financeService, this.input);
   }
 
   registerServiceWorker() {

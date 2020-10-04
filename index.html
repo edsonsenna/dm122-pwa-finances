@@ -8,6 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>PWA - Finances</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css">
@@ -32,13 +33,16 @@
       </div>
       <main class="mdl-layout__content mat-typography" style="text-align: center">
         <form>
-          <input type="text" name="item" placeholder="Type something" autofocus="" required="" autocomplete="off">
+          <input id="value" name="value" value="0,00" inputmode="numeric" autocomplete="off">
+          <a id="earnt-button" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">remove</i>Spent</a>
+          <a id="spent-button" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Earnt</a>
         </form>
         <ul>
         </ul>
       </main>
     </div>
   </div>
+  <script src="./node_modules/simple-mask-money/lib/simple-mask-money.js"></script>
   <script defer src="assets/js/material.min.js"></script>
   <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
   <script type="module" src="assets/js/app.js"></script>

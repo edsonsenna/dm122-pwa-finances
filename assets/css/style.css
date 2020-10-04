@@ -41,3 +41,7 @@ li > button {
 .done > span {
   text-decoration: line-through;
 }
+
+#earnt-button {
+  color: 'red';
+}
