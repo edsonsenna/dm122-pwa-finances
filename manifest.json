@@ -1,7 +1,7 @@
 {
   "name": "PWA - Finances",
   "short_name": "PWA - Finances",
-  "theme_color": "#3f51b5",
+  "theme_color": "green",
   "background_color": "#fff",
   "display": "standalone",
   "scope": ".",

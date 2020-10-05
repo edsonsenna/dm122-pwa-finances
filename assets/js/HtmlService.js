@@ -150,6 +150,9 @@ export default class HtmlService {
         await this.financeService.delete(financeId);
         this.finances = this.finances.filter(finance => finance.id !== financeId);
         liRef.remove();
+        this.currentFinance = null;
+        this.enableCreatingMode();
+        this.resetInputAndSetMask();
         this.updateState();
 
     }
@@ -212,10 +215,6 @@ export default class HtmlService {
         li.classList.add(finance.type ? EARNT_CSS_CLASS : SPENT_CSS_CLASS);
         spanValue.classList.add(finance.type ? 'green-text' : 'red-text');
 
-        // if(task.done) {
-        //     li.classList.add(DONE_CSS_CLASS);
-        // }
-
         li.appendChild(spanValue);
         li.appendChild(spanCreatedDate);
         li.appendChild(button);
@@ -239,9 +238,6 @@ export default class HtmlService {
         totalSpent = Number(totalSpent.toFixed(2));
         totalFinances = totalEarnt + totalSpent;
         totalFinances = Number(totalFinances.toFixed(2));
-
-        // let totalFinancesFixed = totalFinances.toFixed(2);
-        // totalFinances = Number(totalFinancesFixed);
 
         maskLabelArgs.prefix = `R$ ${totalFinances >= 0 ? '' : '-'}`;
         this.totalFinancesSpan.innerHTML = SimpleMaskMoney.formatToMask(`${totalFinances}`.replace('.', ''), maskLabelArgs);  

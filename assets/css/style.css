@@ -13,10 +13,20 @@ input {
   font-size: 1.4em;
 }
 
+header {
+  background-color: green !important;
+}
+
+main {
+  overflow-y: hidden !important;
+}
+
 ul {
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow-y: scroll;
+  max-height: calc(100vh - 300px);
 }
 
 li {
