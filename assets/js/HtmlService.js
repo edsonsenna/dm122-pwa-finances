@@ -119,6 +119,19 @@ export default class HtmlService {
         const finance = this.finances.find(item => item.id === financeId);
         if(finance) {
             this.currentFinance = finance;
+            const creatingActions = document.getElementById('creating-actions');
+            if(creatingActions) creatingActions.style.display = "none";
+            const editingActions = document.getElementById('editing-actions');
+            if(editingActions) editingActions.style.display = "block";
+            const editingType = document.getElementById('editing-finance-type');
+            if(editingType) editingType.innerHTML = `Type: ${finance.type ? 'Earnt' : 'Spent'}`;
+            const editingOldValue = document.getElementById('editing-finance-old-value');
+            if(editingOldValue) {
+                maskLabelArgs.prefix = 'R$ '
+                finance.value = Number(finance.value.toFixed(2));
+                const oldValue = SimpleMaskMoney.formatToMask(finance.value, maskLabelArgs);
+                editingOldValue.innerHTML = `Old Value: ${oldValue}`;
+            }
             console.log('[CurrentFinance]', this.currentFinance);
         }
     }

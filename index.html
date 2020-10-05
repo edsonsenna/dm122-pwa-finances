@@ -49,8 +49,16 @@
         </div>
         <form>
           <input id="value" name="value" value="0,00" inputmode="numeric" autocomplete="off">
-          <a id="spent-button" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">remove</i>Spent</a>
-          <a id="earnt-button" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Earnt</a>
+          <div id="creating-actions">
+            <a id="spent-button" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">remove</i>Spent</a>
+            <a id="earnt-button" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Earnt</a>
+          </div>
+          <div id="editing-actions">
+            <a id="cancel-button" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">remove</i>Cancel</a>
+            <a id="save-button" class="waves-effect waves-light btn"><i class="material-icons left">done</i>Update</a>
+            <div id="editing-finance-type">Type: Earnt</div>
+            <div id="editing-finance-old-value" >Old Value: 0</div>
+          </div>
         </form>
         <ul>
         </ul>
