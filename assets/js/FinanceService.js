@@ -12,22 +12,6 @@ export default class FinanceService {
         db.version(1).stores({
             finances: '++id, type, value, createAt'
         });
-        
-        db.on('populate', async () => {
-            console.log('It runs only once!');
-            await db.finances.bulkPut([
-                {
-                    type: 0,
-                    value: 300.00,
-                    createdAt: Date.now(),
-                },
-                {
-                    type: 1,
-                    value: 150.00,
-                    createdAt: Date.now(),
-                },
-            ])
-        })
     }
 
     getAll() {
