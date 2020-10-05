@@ -42,6 +42,10 @@ li > button {
   text-decoration: line-through;
 }
 
+.in-edition {
+  background-color: #e4e8e0;
+}
+
 #earnt-button {
   color: 'red';
 }
@@ -90,4 +94,8 @@ li > button {
 
 #editing-actions {
   display: none;
+}
+
+#editing-finance-type {
+  margin-top: 5px;
 }

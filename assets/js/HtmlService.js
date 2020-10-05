@@ -1,3 +1,4 @@
+const IS_EDITING_CSS_CLASS = 'in-edition';
 const EARNT_CSS_CLASS = 'earnt-item';
 const SPENT_CSS_CLASS = 'spent-item';
 const maskArgs = {
@@ -18,7 +19,6 @@ const maskLabelArgs = {
     prefix: 'R$ ',
     suffix: '',
     fixed: true,
-    fractionDigits: 2,
     decimalSeparator: ',',
     thousandsSeparator: '.',
     cursor: 'end'
@@ -52,6 +52,8 @@ export default class HtmlService {
     bindFromEvent() {
         const earntButton = document.getElementById('earnt-button');
         const spentButton = document.getElementById('spent-button');
+        const updateButton = document.getElementById('update-button');
+        const cancelButton = document.getElementById('cancel-button');
         const form = document.querySelector('form');
 
         earntButton.addEventListener('click', event => {
@@ -77,6 +79,30 @@ export default class HtmlService {
                 this.resetInputAndSetMask();
             }
         });
+
+        updateButton.addEventListener('click', event => {
+            event.preventDefault();
+            if(this.valueInput && this.currentFinance && this.currentFinance.id) {
+                const value = this.valueInput.formatToNumber();
+                if(value && Number(value)) {
+                    const type = 0;
+                    this.updateFinance(value);
+                }
+                this.resetInputAndSetMask();
+            }
+        });
+
+        cancelButton.addEventListener('click', event => {
+            event.preventDefault();
+            this.currentFinance = null;
+            this.resetInputAndSetMask();
+            const items = Array.from(document.querySelector('ul').getElementsByTagName('li'));
+            items.forEach(childNode => {
+                childNode.classList = [];
+            });
+            this.enableCreatingMode();
+
+        })
     }
 
     async createFinance(value, type) {
@@ -93,10 +119,31 @@ export default class HtmlService {
         this.valueInput = SimpleMaskMoney.setMask('#value', maskArgs);
     }
 
-    async saveFinance(taskId, isDone) {
-        const task = await this.financeService.get(taskId);
-        task.done = isDone;
-        this.financeService.save(task);
+    enableEditingMode() {
+        const creatingActions = document.getElementById('creating-actions');
+        if(creatingActions) creatingActions.style.display = "none";
+        const editingActions = document.getElementById('editing-actions');
+        if(editingActions) editingActions.style.display = "block";
+    }
+
+    enableCreatingMode() {
+        const creatingActions = document.getElementById('creating-actions');
+        if(creatingActions) creatingActions.style.display = "block";
+        const editingActions = document.getElementById('editing-actions');
+        if(editingActions) editingActions.style.display = "none";
+    }
+
+    async updateFinance(value) {
+        const finance = this.currentFinance;
+        finance.value = value;
+        await this.financeService.save(finance);
+        this.finances = this.finances.map(item => item.id === finance.id ? finance : item);
+        const ul = document.querySelector('ul');
+        if(ul) ul.innerHTML = '';
+        await this.listFinances();
+        this.currentFinance = null;
+        this.resetInputAndSetMask();
+        this.enableCreatingMode();
     }
 
     async deleteFinance(financeId, liRef) {
@@ -111,28 +158,32 @@ export default class HtmlService {
         this.finances = await this.financeService.getAll();
         this.finances.map((finance) => this.addToHtmlList(finance));
         this.updateState();
-        console.log(this.finances);
     }
 
     enableToEdit(li) {
         const financeId = +li.getAttribute('data-item-id');
+
+        const items = Array.from(document.querySelector('ul').getElementsByTagName('li'));
+        items.forEach(childNode => {
+            childNode.classList = childNode.getAttribute('data-item-id') === `${financeId}` 
+                ? [IS_EDITING_CSS_CLASS]
+                : [];
+        });
+
         const finance = this.finances.find(item => item.id === financeId);
         if(finance) {
             this.currentFinance = finance;
-            const creatingActions = document.getElementById('creating-actions');
-            if(creatingActions) creatingActions.style.display = "none";
-            const editingActions = document.getElementById('editing-actions');
-            if(editingActions) editingActions.style.display = "block";
+            this.enableEditingMode();
             const editingType = document.getElementById('editing-finance-type');
             if(editingType) editingType.innerHTML = `Type: ${finance.type ? 'Earnt' : 'Spent'}`;
             const editingOldValue = document.getElementById('editing-finance-old-value');
             if(editingOldValue) {
                 maskLabelArgs.prefix = 'R$ '
                 finance.value = Number(finance.value.toFixed(2));
+                this.valueInput.value = SimpleMaskMoney.formatToMask(finance.value, maskArgs);
                 const oldValue = SimpleMaskMoney.formatToMask(finance.value, maskLabelArgs);
                 editingOldValue.innerHTML = `Old Value: ${oldValue}`;
             }
-            console.log('[CurrentFinance]', this.currentFinance);
         }
     }
 
@@ -193,11 +244,11 @@ export default class HtmlService {
         // totalFinances = Number(totalFinancesFixed);
 
         maskLabelArgs.prefix = `R$ ${totalFinances >= 0 ? '' : '-'}`;
-        this.totalFinancesSpan.innerHTML = SimpleMaskMoney.formatToMask(totalFinances, maskLabelArgs);  
-        maskLabelArgs.prefix = `R$ ${totalEarnt >= 0 ? '' : '-'}`;      
-        this.totalEarntSpan.innerHTML = SimpleMaskMoney.formatToMask(totalEarnt, maskLabelArgs);   
+        this.totalFinancesSpan.innerHTML = SimpleMaskMoney.formatToMask(`${totalFinances}`.replace('.', ''), maskLabelArgs);  
+        maskLabelArgs.prefix = `R$ ${totalEarnt >= 0 ? '' : '-'}`;    
+        this.totalEarntSpan.innerHTML = SimpleMaskMoney.formatToMask(`${totalEarnt}`.replace('.', ''), maskLabelArgs);   
         maskLabelArgs.prefix = `R$ ${totalSpent >= 0 ? '' : '-'}`;     
-        this.totalSpentSpan.innerHTML = SimpleMaskMoney.formatToMask(totalSpent, maskLabelArgs);        
+        this.totalSpentSpan.innerHTML = SimpleMaskMoney.formatToMask(`${totalSpent}`.replace('.', ''), maskLabelArgs);        
 
     }
 
